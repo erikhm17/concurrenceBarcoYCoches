@@ -1,0 +1,14 @@
+/* coche */
+Repetir
+	Wait(mutex)
+	if (llegoBarco)
+		if (sigueEnPuente() 
+			|| salioDelPuente())
+			avanzar();
+		else if (llegoAlPuente())	
+			esperar();
+	
+	else
+		avanzar();
+	Signal(mutex)
+Fin

@@ -1,0 +1,5 @@
+Semaforos: 
+	puenteLibre  = 1; (true)
+	mutex = 1;
+Variables: 
+	llegoBarco = false;

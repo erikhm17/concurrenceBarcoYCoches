@@ -1,0 +1,22 @@
+/* barco */
+
+Repetir
+	Wait(mutex)
+	if (verificarLlegoBarco())
+		abrirPuente();
+		avanzar();
+		cerrarPuente();
+	else	
+		avanzar();
+	Signal(mutex)
+	
+Fin
+	
+	VerificarLlegoBarco(){
+		Wait(mutex);
+		if (coordenada ...) {
+			llegoBarco = true;
+			return true;
+		}
+		Signal(mutex)
+	}	
