@@ -2,3 +2,6 @@
 /build
 /nbproject
 build.xml
+.idea
+concurrenceBarcoYCoches.iml
+
