@@ -3,19 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package concurrenceBarcoYCoches;
 
-import concurrencebarco.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
-import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
  *
- * @author Erik
+ * @author Erik hammer
  */
 public class Coche extends Thread {
 
@@ -110,28 +109,38 @@ public class Coche extends Thread {
     public void run() {
         while (true) {
             try {
-                Lienzo.puenteLibre.Wait();
-                avanzar();
-                Lienzo.puenteLibre.Signal();
+                if (estaEnElPuente() ){
+                    avanzar();
+                    Lienzo.mutex.Wait();
+                        Lienzo.carrosEnPuente = true;
+                    Lienzo.mutex.Signal();
+                }else if (salioDelPuente()){
+                    avanzar();
+                    Lienzo.mutex.Wait();
+                        Lienzo.carrosEnPuente = false;
+                    Lienzo.mutex.Signal();
+
+                }else if (antesDelPuente()){
+                        Lienzo.puenteLibre.Wait();
+                        avanzar();
+                        Lienzo.puenteLibre.Signal();
+                }
+
                 sleep(delay);
+
             } catch (InterruptedException ex) {
                 Logger.getLogger(Barco.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
     }
-
-    public void Esperar() {
-        coordenadaX = 500;
-    }
-
     public void avanzar() {
         coordenadaX = coordenadaX + 1;
         getPanel().repaint();
     }
 
-    public boolean sigueEnElPuente() {
-        if (coordenadaX > 550 && coordenadaX < 650) {
+    public boolean antesDelPuente() {
+        if (coordenadaX < 550) {
             return true;
         }
         return false;
@@ -144,8 +153,8 @@ public class Coche extends Thread {
         return false;
     }
 
-    public boolean llegoAlPuente() {
-        if (coordenadaX > 550 && coordenadaX < 650) {
+    public boolean estaEnElPuente() {
+        if (coordenadaX >= 550 && coordenadaX < 650) {
             return true;
         }
         return false;

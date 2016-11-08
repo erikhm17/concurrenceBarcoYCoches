@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package concurrenceBarcoYCoches;
 
-import concurrencebarco.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -82,20 +82,25 @@ public class Lienzo extends javax.swing.JPanel implements Runnable {
         /* DIBUJANDO C*/
         g.fillRect(10, 260, 500, 10);
 
-        /*dibujando  D*/
-        g.fillRect(510, 260, 100, 10);
+
         /*dibujando E*/
         g.fillRect(610, 260, 500, 10);
         /* dibujando F*/
         g.fillRect(10, 310, 500, 10);
-        /* dibujando G*/
-        g.fillRect(510, 310, 500, 10);
         /* dibujando H*/
         g.fillRect(610, 310, 500, 10);
         /* dibujando I*/
         g.fillRect(500, 310, 10, 250);
         /* dibujando J*/
         g.fillRect(600, 310, 10, 250);
+
+        if (llegoBarco){
+            g.setColor(Color.RED);
+        }
+        /*dibujando  D*/
+        g.fillRect(510, 260, 100, 10);
+        /* dibujando G*/
+        g.fillRect(510, 310, 100, 10);
 
         /* dibujando barcos */
         for (int i = 0; i < arrayBarcos.size(); i++) {
@@ -121,7 +126,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable {
     /* variable */
     static boolean llegoBarco = false;
     static int intBarco = 0;
-
+    static boolean carrosEnPuente = false;
     /* consumidor para la salida de los varones */
     @Override
     public void run() {
@@ -174,7 +179,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable {
                 null,
                 550,// coordenada X
                 110,// coordenada Y
-                50,//delay
+                70,//delay
                 colores.get((int) (Math.random() * colores.size()))
         ));
         arrayBarcos.get(i).start();

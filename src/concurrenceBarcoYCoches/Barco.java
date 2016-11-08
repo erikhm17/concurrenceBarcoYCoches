@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package concurrenceBarcoYCoches;
 
-import concurrencebarco.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.logging.Level;
@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Erik
+ * @author Erik hammer
  */
 public class Barco extends Thread {
 
@@ -45,56 +45,27 @@ public class Barco extends Thread {
         this.color = color;
     }
 
-    public int getDelay() {
-        return delay;
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
     public Color getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-
-    }
 
     public int getCordenadaX() {
         return coordenadaX;
     }
 
-    public void setCordenadaX(int cordenadaX) {
-        this.coordenadaX = cordenadaX;
-
-    }
 
     public int getCordenadaY() {
         return coordenadaY;
     }
 
-    public void setCordenadaY(int cordenadaY) {
-        this.coordenadaY = cordenadaY;
 
-    }
 
     public JPanel getPanel() {
         return panel;
     }
 
-    public void setPanel(JPanel panel) {
-        this.panel = panel;
-    }
+
 
     public Graphics getGraphics() {
         return graphics;
@@ -109,15 +80,20 @@ public class Barco extends Thread {
         while (true) {
             try {
                 avanzar();
-                if (llegoAlPuente()) {
+                if (llegoALimite()) {
+                    avanzar();
                     Lienzo.puenteLibre.Wait();
-                    while (!salioDelPuente()) {                        
+                    while (!salioDelPuente() &&
+                            !Lienzo.carrosEnPuente) {
+                        Lienzo.llegoBarco = true;
                         avanzar();
                         sleep(delay);
+
                     }
-                    System.out.println("puente ocupado");
                     Lienzo.puenteLibre.Signal();
                 }
+
+                Lienzo.llegoBarco = false;
                 /*repintar*/
                 sleep(delay);
             } catch (InterruptedException ex) {
@@ -135,9 +111,6 @@ public class Barco extends Thread {
         getPanel().repaint();
     }
 
-    private void cerrarPuente() {
-        System.out.println("cerrar puente");
-    }
     public boolean llegoALimite() {
         if (coordenadaY > 200 && coordenadaY < 370) {
             return true;
